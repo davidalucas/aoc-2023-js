@@ -90,3 +90,33 @@ export function sumValidGames(games, maxRed, maxGreen, maxBlue) {
   }
   return sum;
 }
+
+/**
+ * Calculates the minimum power factor for the provided games (as
+ * described in the AoC Day 2 Part 2 problem).
+ * @param {CubeGame[]} games The games to go through.
+ * @returns {number} The power factor
+ */
+export function getMinPowerFactor(games) {
+  let sum = 0;
+  for (const game of games) {
+    let redFactor = 0;
+    let greenFactor = 0;
+    let blueFactor = 0;
+
+    for (const reveal of game.reveals) {
+      if (reveal.reds > redFactor) {
+        redFactor = reveal.reds;
+      }
+      if (reveal.greens > greenFactor) {
+        greenFactor = reveal.greens;
+      }
+      if (reveal.blues > blueFactor) {
+        blueFactor = reveal.blues;
+      }
+    }
+
+    sum += redFactor * greenFactor * blueFactor;
+  }
+  return sum;
+}
