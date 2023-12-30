@@ -1,0 +1,15 @@
+{
+  "name": "aoc-2023",
+  "version": "1.0.0",
+  "description": "Avent of Code 2023",
+  "main": "index.js",
+  "scripts": {
+    "test": "vitest"
+  },
+  "author": "",
+  "license": "MIT",
+  "devDependencies": {
+    "prettier": "^3.1.1",
+    "vitest": "^1.1.0"
+  }
+}
