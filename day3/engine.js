@@ -25,11 +25,15 @@ export function addPartNumbers(lines) {
       }
 
       // now, determine if the number you've found is valid
-      let isValid = false;
+      if (!isValidPartNumber(lines, i, start, end)) {
+        continue;
+      }
+
+      sum += parseInt(line.substring(start, end + 1));
+
+      // SUPER-IMPORTANT! Don't forget to move j
+      j = end;
     }
-    // step 2: record the number and it's index within the line
-    // step 3: see if there are more numbers to the right and repeat step 2
-    // step 4:
   }
 
   return sum;
@@ -43,34 +47,34 @@ export function addPartNumbers(lines) {
  * @param {number} end The ending position for the part number on the line
  * @returns true if the part number is valid
  */
-export function isValidPartNumber(line, lineIdx, start, end) {
+export function isValidPartNumber(lines, lineIdx, start, end) {
   let symbolRegex = /^[^a-zA-Z0-9\.]$/;
 
   // loop over each number
   for (let i = start; i < end; i++) {
     // check upper 3
-    if (line[lineIdx - 1]) {
+    if (lines[lineIdx - 1]) {
       if (
-        symbolRegex.test(line[lineIdx - 1][i - 1]) ||
-        symbolRegex.test(line[lineIdx - 1][i]) ||
-        symbolRegex.test(line[lineIdx - 1][i + 1])
+        symbolRegex.test(lines[lineIdx - 1][i - 1]) ||
+        symbolRegex.test(lines[lineIdx - 1][i]) ||
+        symbolRegex.test(lines[lineIdx - 1][i + 1])
       ) {
         return true;
       }
     }
     // check current L and R
     if (
-      symbolRegex.test(line[lineIdx][i - 1]) ||
-      symbolRegex.test(line[lineIdx][i + 1])
+      symbolRegex.test(lines[lineIdx][i - 1]) ||
+      symbolRegex.test(lines[lineIdx][i + 1])
     ) {
       return true;
     }
     // check lower 3
-    if (line[lineIdx + 1]) {
+    if (lines[lineIdx + 1]) {
       if (
-        symbolRegex.test(line[lineIdx + 1][i - 1]) ||
-        symbolRegex.test(line[lineIdx + 1][i]) ||
-        symbolRegex.test(line[lineIdx + 1][i + 1])
+        symbolRegex.test(lines[lineIdx + 1][i - 1]) ||
+        symbolRegex.test(lines[lineIdx + 1][i]) ||
+        symbolRegex.test(lines[lineIdx + 1][i + 1])
       ) {
         return true;
       }

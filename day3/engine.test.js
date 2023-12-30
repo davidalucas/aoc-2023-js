@@ -32,5 +32,5 @@ test("addPartNumbers adds part numbers in example data", () => {
     "...$.*....",
     ".664.598..",
   ];
-  // expect(addPartNumbers(data)).toBe(4361);
+  expect(addPartNumbers(data)).toBe(4361);
 });
