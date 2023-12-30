@@ -65,6 +65,28 @@ export function parseReveal(srcString) {
  * Calculates the sum of valid games.
  *
  * @param {CubeGame[]} games - The array of games.
+ * @param {number} maxRed - The maximum number of allowed red cubes
+ * @param {number} maxGreen - The maximum number of allowed green cubes
+ * @param {number} maxBlue - The maximum number of allowed blue cubes
  * @returns {number} The sum of valid games.
  */
-export function sumValidGames(games) {}
+export function sumValidGames(games, maxRed, maxGreen, maxBlue) {
+  let sum = 0;
+  for (const game of games) {
+    let validGame = true;
+    for (const reveal of game.reveals) {
+      if (
+        reveal.reds > maxRed ||
+        reveal.greens > maxGreen ||
+        reveal.blues > maxBlue
+      ) {
+        validGame = false;
+        break;
+      }
+    }
+    if (validGame) {
+      sum += game.index;
+    }
+  }
+  return sum;
+}

@@ -4,7 +4,9 @@
  */
 
 import { expect, test } from "vitest";
-import { parseCubeGame, parseReveal } from "./cubes";
+import { parseCubeGame, parseReveal, sumValidGames } from "./cubes";
+import { createReadStream } from "fs";
+import { createInterface } from "readline";
 
 test("parseReveal parses data as expected", () => {
   expect(parseReveal("1 red, 2 green, 6 blue")).toEqual({
@@ -40,4 +42,39 @@ test("parseCubeGame parses data as expected", () => {
     ],
   };
   expect(parseCubeGame(inputData)).toEqual(expected);
+});
+
+test("sumValidGames sums valid games in sample data", () => {
+  let games = [
+    "Game 1: 3 blue, 4 red; 1 red, 2 green, 6 blue; 2 green",
+    "Game 2: 1 blue, 2 green; 3 green, 4 blue, 1 red; 1 green, 1 blue",
+    "Game 3: 8 green, 6 blue, 20 red; 5 blue, 4 red, 13 green; 5 green, 1 red",
+    "Game 4: 1 green, 3 red, 6 blue; 3 green, 6 red; 3 green, 15 blue, 14 red",
+    "Game 5: 6 red, 1 blue, 3 green; 2 blue, 1 red, 2 green",
+  ].map((val) => parseCubeGame(val));
+  expect(sumValidGames(games, 12, 13, 14)).toBe(8);
+});
+
+test("sumValidGames sums valid games in real data", async () => {
+  /**@type {CubeGame[]} */
+  let games = [];
+
+  // reading a file line by line is not really what you wanna do in Node...
+  // it's better to stream the file and work out the numbers as you're streaming
+  // through it; but for simplicity, I'm just going to build a string array here
+  const readInterface = createInterface({
+    input: createReadStream("./day2/day2.txt"),
+    output: process.stdout,
+    console: false,
+  });
+
+  await new Promise((resolve) => {
+    readInterface
+      .on("line", function (line) {
+        games.push(parseCubeGame(line));
+      })
+      .on("close", resolve);
+  });
+
+  expect(sumValidGames(games, 12, 13, 14)).toBe(2727);
 });
