@@ -124,3 +124,69 @@ export function findPartNumbers(lines) {
 
   return partNumbers;
 }
+
+/**
+ * Performs the gear summation algorithm for Day 3 Part 2
+ * @param {string[]} lines The data to search through
+ * @returns {number} The summation for all of the gear parameters
+ */
+export function sumAllGears(lines) {
+  let sum = 0;
+  const partNumbers = findPartNumbers(lines);
+
+  for (let i = 0; i < lines.length; i++) {
+    const line = lines[i];
+
+    for (let j = 0; j < line.length; j++) {
+      if (line[j] !== "*") continue;
+
+      /**@type {PartNumber[][]} */
+      const foundPtNums = Array.from({ length: 3 }, () => []);
+
+      // look for PartNumbers above
+      for (const pn of partNumbers[i - 1]) {
+        if (pn.start <= j - 1 && j - 1 <= pn.end) {
+          foundPtNums[0].push(pn);
+        } else if (pn.start <= j && j <= pn.end) {
+          foundPtNums[0].push(pn);
+        } else if (pn.start <= j + 1 && j + 1 <= pn.end) {
+          foundPtNums[0].push(pn);
+        }
+      }
+      // look for PartNumbers to the left and right
+      for (const pn of partNumbers[i]) {
+        if (pn.end === j - 1 || pn.start === j + 1) {
+          foundPtNums[1].push(pn);
+        }
+      }
+      // look for PartNumbers below
+      for (const pn of partNumbers[i + 1]) {
+        if (pn.start <= j - 1 && j - 1 <= pn.end) {
+          foundPtNums[2].push(pn);
+        } else if (pn.start <= j && j <= pn.end) {
+          foundPtNums[2].push(pn);
+        } else if (pn.start <= j + 1 && j + 1 <= pn.end) {
+          foundPtNums[2].push(pn);
+        }
+      }
+
+      //remove duplicates
+      for (let k = 0; k < 3; k++) {
+        foundPtNums[k] = foundPtNums[k].filter(
+          (v, i, a) =>
+            a.findIndex((pn) => pn.start === v.start && pn.end === v.end) === i,
+        );
+      }
+
+      const uniquePartNumbers = foundPtNums.reduce((a, b) => a.concat(b));
+
+      // if is Gear, add to the sum
+
+      if (uniquePartNumbers.length === 2) {
+        sum += uniquePartNumbers[0].value * uniquePartNumbers[1].value;
+      }
+    }
+  }
+
+  return sum;
+}
