@@ -34,3 +34,22 @@ test("addPartNumbers adds part numbers in example data", () => {
   ];
   expect(addPartNumbers(data)).toBe(4361);
 });
+
+test("addPartNumbers adds part numbers in real data", async () => {
+  let data = [];
+
+  const readInterface = createInterface({
+    input: createReadStream("./day3/day3.txt"),
+    output: process.stdout,
+    console: false,
+  });
+
+  await new Promise((resolve) => {
+    readInterface
+      .on("line", function (line) {
+        data.push(line);
+      })
+      .on("close", resolve);
+  });
+  expect(addPartNumbers(data)).toBe(544664);
+});
