@@ -1,7 +1,7 @@
 import { expect, test } from "vitest";
 import { createReadStream } from "fs";
 import { createInterface } from "readline";
-import { addPartNumbers, isValidPartNumber } from "./engine";
+import { addPartNumbers, findPartNumbers, isValidPartNumber } from "./engine";
 
 test("isPartNumberValid finds valid part number", () => {
   const data = [
@@ -52,4 +52,18 @@ test("addPartNumbers adds part numbers in real data", async () => {
       .on("close", resolve);
   });
   expect(addPartNumbers(data)).toBe(544664);
+});
+
+test("findPartNumbers finds part numbers in test data", () => {
+  const data = ["467..114..", "...*......", "617*......"];
+  const expected = [
+    [
+      { value: 467, start: 0, end: 2 },
+      { value: 114, start: 5, end: 7 },
+    ],
+    [],
+    [{ value: 617, start: 0, end: 2 }],
+  ];
+
+  expect(findPartNumbers(data)).toEqual(expected);
 });

@@ -82,3 +82,45 @@ export function isValidPartNumber(lines, lineIdx, start, end) {
   }
   return false;
 }
+
+/**
+ * @typedef PartNumber
+ * @property {number} start The position where the PartNumber begins on the line
+ * @property {number} end The position where the PartNumber ends on the line
+ * @property {number} value The value of the PartNumber
+ */
+
+/**
+ * Finds all of the PartNumbers (both valid and invalid) in the provided data
+ * @param {string[]} lines The data to look through
+ * @returns {PartNumber[][]} An array of all of the PartNumbers found in the provided data
+ */
+export function findPartNumbers(lines) {
+  /**@type {PartNumber[][]} */
+  let partNumbers = Array.from({ length: lines.length }, () => []);
+  const intRegex = /^[0-9]$/;
+
+  for (let i = 0; i < lines.length; i++) {
+    const line = lines[i];
+    let start = 0;
+
+    for (let j = 0; j < line.length; j++) {
+      let char = line[j];
+      if (!intRegex.test(char)) continue;
+
+      start = j;
+      while (intRegex.test(char)) {
+        j++;
+        char = line[j];
+      }
+
+      partNumbers[i].push({
+        value: parseInt(line.substring(start, j + 1)),
+        start: start,
+        end: j - 1,
+      });
+    }
+  }
+
+  return partNumbers;
+}
