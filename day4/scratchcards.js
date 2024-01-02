@@ -6,21 +6,23 @@
 export function calculateWinnings(data) {
   return data
     .map((line) => {
-      let matches = 0;
+      let matches = -1;
 
       const lineSplit = line.split("|");
       const winningNumbers = lineSplit[0]
         .split(":")[1]
         .trim()
         .split(" ")
-        .filter((s) => s !== " ")
-        .map((s) => parseInt(s));
+        .map((s) => parseInt(s))
+        .filter((n) => !isNaN(n));
 
       const foundNumbers = lineSplit[1]
         .trim()
         .split(" ")
-        .filter((s) => s !== " ")
-        .map((s) => parseInt(s));
+        .map((s) => parseInt(s))
+        .filter((n) => !isNaN(n));
+
+      console.log(foundNumbers);
 
       for (const num of foundNumbers) {
         if (winningNumbers.find((n) => n === num)) {
@@ -28,7 +30,7 @@ export function calculateWinnings(data) {
         }
       }
 
-      return 2 ^ matches;
+      return matches === -1 ? 0 : 2 ** matches;
     })
     .reduce((a, b) => a + b);
 }

@@ -1,4 +1,6 @@
 import { expect, test } from "vitest";
+import { createReadStream } from "fs";
+import { createInterface } from "readline";
 import { calculateWinnings } from "./scratchcards";
 
 test("calculateWinnings calculates correct sum for sample data", () => {
@@ -11,5 +13,25 @@ test("calculateWinnings calculates correct sum for sample data", () => {
     "Card 6: 31 18 13 56 72 | 74 77 10 23 35 67 36 11",
   ];
   const expected = 13;
+  expect(calculateWinnings(data)).toBe(expected);
+});
+
+test("calculateWinnings calculates correct sum for real data", async () => {
+  let data = [];
+
+  const readInterface = createInterface({
+    input: createReadStream("./day4/data.txt"),
+    output: process.stdout,
+    console: false,
+  });
+
+  await new Promise((resolve) => {
+    readInterface
+      .on("line", function (line) {
+        data.push(line);
+      })
+      .on("close", resolve);
+  });
+  const expected = 23235;
   expect(calculateWinnings(data)).toBe(expected);
 });
