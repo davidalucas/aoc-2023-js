@@ -21,6 +21,8 @@ export class Map {
 export class MapCollection {
   /**@type {MapCollection | undefined} */
   next;
+  /**@type {MapCollection | undefined} */
+  prev;
   /**@type {Map[]} */
   maps;
 

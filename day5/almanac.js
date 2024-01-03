@@ -56,6 +56,7 @@ export class Almanac {
       this.length++;
       return;
     }
+    map.prev = this.#tail;
     this.#tail.next = map;
     this.#tail = map;
     this.length++;

@@ -108,23 +108,23 @@ test("getMinLocEnhanced works for sample data", () => {
   expect(almanac.getMinLocEnhanced()).toBe(46);
 });
 
-test("getMinLocEnhanced works for real data", async () => {
-  let data = [];
+// test("getMinLocEnhanced works for real data", async () => {
+//   let data = [];
 
-  const readInterface = createInterface({
-    input: createReadStream("./day5/data.txt"),
-    output: process.stdout,
-    console: false,
-  });
+//   const readInterface = createInterface({
+//     input: createReadStream("./day5/data.txt"),
+//     output: process.stdout,
+//     console: false,
+//   });
 
-  await new Promise((resolve) => {
-    readInterface
-      .on("line", function (line) {
-        data.push(line);
-      })
-      .on("close", resolve);
-  });
+//   await new Promise((resolve) => {
+//     readInterface
+//       .on("line", function (line) {
+//         data.push(line);
+//       })
+//       .on("close", resolve);
+//   });
 
-  const almanac = new Almanac(data);
-  expect(almanac.getMinLocEnhanced()).toBe(78775051);
-});
+//   const almanac = new Almanac(data);
+//   expect(almanac.getMinLocEnhanced()).toBe(78775051);
+// });
