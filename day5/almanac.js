@@ -89,4 +89,48 @@ export class Almanac {
 
     return location;
   }
+
+  getMinLocEnhanced() {
+    let location = -1;
+
+    // pre-allocate some reusable variables
+    /**@type {number} */
+    let seed;
+    /**@type {number} */
+    let seedRange;
+    /**@type {number} */
+    let upperLim;
+    /**@type {MapCollection} */
+    let currMapCol = this.#head;
+    /**@type {number} */
+    let source;
+    /**@type {number} */
+    let diff;
+
+    for (let j = 0; j < this.seeds.length; j += 2) {
+      seed = this.seeds[j];
+      seedRange = this.seeds[j + 1];
+      upperLim = seed + seedRange;
+      for (; seed < upperLim; ++seed) {
+        source = seed;
+        for (let i = 0; i < this.length; ++i) {
+          for (const map of currMapCol.maps) {
+            diff = source - map.source;
+            if (diff >= 0 && diff <= map.range) {
+              source = map.dest + diff;
+              break;
+            }
+          }
+          currMapCol = currMapCol.next;
+        }
+        if (location == -1) {
+          location = source;
+        } else if (source < location) {
+          location = source;
+        }
+        currMapCol = this.#head; // reset to beginning of list
+      }
+    }
+    return location;
+  }
 }
