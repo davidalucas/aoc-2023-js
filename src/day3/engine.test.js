@@ -41,12 +41,13 @@ test("addPartNumbers adds part numbers in example data", () => {
 });
 
 test("addPartNumbers adds part numbers in real data", async () => {
+  /** @type {string[]} */
   let data = [];
 
   const readInterface = createInterface({
-    input: createReadStream("./day3/day3.txt"),
+    input: createReadStream("./src/day3/day3.txt"),
     output: process.stdout,
-    console: false,
+    terminal: false,
   });
 
   await new Promise((resolve) => {
@@ -91,12 +92,13 @@ test("sumAllGears performs summation for example data", () => {
 });
 
 test("sumAllGears performs summation for real data", async () => {
+  /** @type {string[]} */
   let data = [];
 
   const readInterface = createInterface({
-    input: createReadStream("./day3/day3.txt"),
+    input: createReadStream("./src/day3/day3.txt"),
     output: process.stdout,
-    console: false,
+    terminal: false,
   });
 
   await new Promise((resolve) => {

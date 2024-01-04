@@ -21,12 +21,13 @@ test("calculateWinnings calculates correct sum for sample data", () => {
 });
 
 test("calculateWinnings calculates correct sum for real data", async () => {
+  /** @type {string[]} */
   let data = [];
 
   const readInterface = createInterface({
-    input: createReadStream("./day4/data.txt"),
+    input: createReadStream("./src/day4/data.txt"),
     output: process.stdout,
-    console: false,
+    terminal: false,
   });
 
   await new Promise((resolve) => {
@@ -67,12 +68,13 @@ test("calculateTotalCards calculates correct sum for sample data", () => {
 });
 
 test("calculateTotalCards calculates correct sum for real data", async () => {
+  /** @type {string[]} */
   let data = [];
 
   const readInterface = createInterface({
-    input: createReadStream("./day4/data.txt"),
+    input: createReadStream("./src/day4/data.txt"),
     output: process.stdout,
-    console: false,
+    terminal: false,
   });
 
   await new Promise((resolve) => {

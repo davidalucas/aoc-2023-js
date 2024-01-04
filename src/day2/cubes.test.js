@@ -68,9 +68,9 @@ test("sumValidGames sums valid games in real data", async () => {
   // it's better to stream the file and work out the numbers as you're streaming
   // through it; but for simplicity, I'm just going to build a string array here
   const readInterface = createInterface({
-    input: createReadStream("./day2/day2.txt"),
+    input: createReadStream("./src/day2/day2.txt"),
     output: process.stdout,
-    console: false,
+    terminal: false,
   });
 
   await new Promise((resolve) => {
@@ -103,9 +103,9 @@ test("getMinPowerFactor gets correct result for real data", async () => {
   // it's better to stream the file and work out the numbers as you're streaming
   // through it; but for simplicity, I'm just going to build a string array here
   const readInterface = createInterface({
-    input: createReadStream("./day2/day2.txt"),
+    input: createReadStream("./src/day2/day2.txt"),
     output: process.stdout,
-    console: false,
+    terminal: false,
   });
 
   await new Promise((resolve) => {
