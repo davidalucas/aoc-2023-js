@@ -9,15 +9,18 @@ test("Calibrate works for sample input", () => {
 });
 
 test("Calibrate works for sample text file", async () => {
+  /**
+   * @type {string[]}
+   */
   let lines = [];
 
   // reading a file line by line is not really what you wanna do in Node...
   // it's better to stream the file and work out the numbers as you're streaming
   // through it; but for simplicity, I'm just going to build a string array here
   const readInterface = createInterface({
-    input: createReadStream("./day1/day1.txt"),
+    input: createReadStream("./src/day1/day1.txt"),
     output: process.stdout,
-    console: false,
+    terminal: false,
   });
 
   await new Promise((resolve) => {
@@ -45,12 +48,15 @@ test("EnhancedCalibrate works for sample input", () => {
 });
 
 test("EnhancedCalibrate works for sample text file", async () => {
+  /**
+   * @type {string[]}
+   */
   let lines = [];
 
   const readInterface = createInterface({
-    input: createReadStream("./day1/day1.txt"),
+    input: createReadStream("./src/day1/day1.txt"),
     output: process.stdout,
-    console: false,
+    terminal: false,
   });
 
   await new Promise((resolve) => {
