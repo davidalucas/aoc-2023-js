@@ -38,3 +38,29 @@ test("calculateWinningRangeProduct finds correct product for real data", () => {
   const actual = calculateWinningRangeProduct(realRaces);
   expect(actual).toBe(138915);
 });
+
+/**
+ * The example provided for Part 2.
+ * @type import("./boatRace").Race
+ */
+const exampleRace = { time: 71530, distance: 940200 };
+
+/**
+ * The actual data provided for Part 2.
+ * @type import("./boatRace").Race
+ */
+const realRace = { time: 46689866, distance: 358105418071080 };
+
+test("calculateChargingTimeMinMax finds correct min/max from example data", () => {
+  const expected = { min: 14, max: 71516 };
+  const actual = calculateChargingTimeMinMax(exampleRace);
+  expect(actual).toEqual(expected);
+  expect(actual.max - actual.min + 1).toBe(71503);
+});
+
+test("calculateChargingTimeMinMax finds correct min/max from real data", () => {
+  const expected = { min: 9674510, max: 37015356 };
+  const actual = calculateChargingTimeMinMax(realRace);
+  expect(actual).toEqual(expected);
+  expect(actual.max - actual.min + 1).toBe(27340847);
+});
