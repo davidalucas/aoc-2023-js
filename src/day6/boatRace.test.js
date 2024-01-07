@@ -4,14 +4,20 @@ import {
   calculateWinningRangeProduct,
 } from "./boatRace";
 
-/** @type import("./boatRace").Race[] */
+/**
+ * The example data provided in Part 1
+ * @type import("./boatRace").Race[]
+ */
 const exampleRaces = [
   { time: 7, distance: 9 },
   { time: 15, distance: 40 },
   { time: 30, distance: 200 },
 ];
 
-/** @type import("./boatRace").Race[] */
+/**
+ * The "real" data provided in Part 1
+ * @type import("./boatRace").Race[]
+ */
 const realRaces = [
   { time: 46, distance: 358 },
   { time: 68, distance: 1054 },
