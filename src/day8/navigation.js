@@ -15,7 +15,7 @@ export function parseNode(data) {
   const splitData = data.split(" = ");
 
   const lrSplitData = splitData[1]
-    .substring(1, splitData[1].length - 2)
+    .substring(1, splitData[1].length - 1)
     .split(", ");
 
   return {
