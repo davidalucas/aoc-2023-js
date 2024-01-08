@@ -1,6 +1,4 @@
 import { expect, test } from "vitest";
-import { createReadStream } from "fs";
-import { createInterface } from "readline";
 import { Almanac } from "./almanac";
 import { MapCollection } from "./mapCollection";
 

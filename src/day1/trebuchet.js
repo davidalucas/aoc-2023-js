@@ -14,14 +14,14 @@ export function calibrate(lines) {
   for (let i = 0; i < lines.length; ++i) {
     // loop forward
     for (let j = 0; j < lines[i].length; ++j) {
-      if (!isNaN(lines[i][j])) {
+      if (!isNaN(parseInt(lines[i][j]))) {
         firstNum = Number(lines[i][j]);
         break;
       }
     }
     // loop backward
     for (let j = lines[i].length - 1; j >= 0; --j) {
-      if (!isNaN(lines[i][j])) {
+      if (!isNaN(parseInt(lines[i][j]))) {
         secondNum = Number(lines[i][j]);
         break;
       }
@@ -69,7 +69,7 @@ export function enhancedCal(lines) {
     // loop forward
     for (let j = 0; j < lines[i].length; ++j) {
       let numFound = false;
-      if (!isNaN(lines[i][j])) {
+      if (!isNaN(parseInt(lines[i][j]))) {
         firstNum = Number(lines[i][j]);
         break;
       }
@@ -92,7 +92,7 @@ export function enhancedCal(lines) {
     // loop backward
     for (let j = lines[i].length - 1; j >= 0; --j) {
       let numFound = false;
-      if (!isNaN(lines[i][j])) {
+      if (!isNaN(parseInt(lines[i][j]))) {
         secondNum = Number(lines[i][j]);
         break;
       }

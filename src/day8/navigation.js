@@ -1,6 +1,5 @@
 import { createReadStream } from "fs";
 import { createInterface } from "readline";
-import { start } from "repl";
 
 /** @typedef {{left: string, right: string}} BinaryNode */
 /** @typedef {{directions: string, path: Record<string, BinaryNode>}} NavigationMap */
