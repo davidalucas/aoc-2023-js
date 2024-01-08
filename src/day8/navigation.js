@@ -1,5 +1,6 @@
 import { createReadStream } from "fs";
 import { createInterface } from "readline";
+import { start } from "repl";
 
 /** @typedef {{left: string, right: string}} BinaryNode */
 /** @typedef {{directions: string, path: Record<string, BinaryNode>}} NavigationMap */
@@ -99,4 +100,91 @@ export function countSteps(navMap) {
  */
 export function getStartingNodes(navMap) {
   return Object.keys(navMap.path).filter((n) => n.endsWith("A"));
+}
+
+/**
+ * Calculates the step count described in the Part 2 problem
+ * @param {NavigationMap} navMap The NavigationMap to assess
+ * @returns {number}
+ */
+export function countGhostSteps(navMap) {
+  const startingNodes = getStartingNodes(navMap);
+  let periods = new Array(startingNodes.length).fill(0);
+
+  for (let i = 0; i < startingNodes.length; i++) {
+    const startLoc = startingNodes[i];
+    let currLoc = startLoc;
+    while (!currLoc.endsWith("Z")) {
+      currLoc = traverseMap(currLoc, navMap);
+      periods[i]++;
+    }
+  }
+  const lcm = calcLCM(periods);
+  return lcm * navMap.directions.length;
+}
+
+/**
+ * Performs a full traversal from the starting location to the end location,
+ * using the directions in the provided NavigationMap
+ * @param {string} startLocation Current location
+ * @param {NavigationMap} navMap The NavigationMap to use
+ * @returns {string} New location
+ */
+export function traverseMap(startLocation, navMap) {
+  let currLocation = startLocation;
+  for (const turn of navMap.directions) {
+    currLocation =
+      turn == "L"
+        ? navMap.path[currLocation].left
+        : navMap.path[currLocation].right;
+  }
+  return currLocation;
+}
+
+/**
+ * Returns the least common multiple of the provided set of values
+ * @param {number[]} numbers The numbers to evaluate
+ * @returns {number}
+ */
+export function calcLCM(numbers) {
+  /** @type {Record<number, number>} */
+  let highestPrimeFactors = {};
+
+  for (let num of numbers) {
+    /** @type {Record<number, number>} */
+    let primeFactors = {};
+    let divisor = 2;
+    while (num > 2) {
+      if (num % divisor === 0) {
+        if (!primeFactors[divisor]) {
+          primeFactors[divisor] = 1;
+        } else {
+          primeFactors[divisor]++;
+        }
+        num = num / divisor;
+      } else {
+        divisor++;
+      }
+    }
+    if (num == 2) {
+      primeFactors[2] = primeFactors[2] ? primeFactors[2] + 1 : 1;
+    }
+    for (const key in primeFactors) {
+      if (Object.hasOwnProperty.call(primeFactors, key)) {
+        const element = primeFactors[key];
+        if (!highestPrimeFactors[key]) {
+          highestPrimeFactors[key] = primeFactors[key];
+        } else if (highestPrimeFactors[key] < primeFactors[key]) {
+          highestPrimeFactors[key] = primeFactors[key];
+        }
+      }
+    }
+  }
+  const lcm = Object.keys(highestPrimeFactors)
+    .map((f) => {
+      const factor = parseInt(f);
+      return factor ** highestPrimeFactors[factor];
+    })
+    .reduce((a, b) => a * b);
+  return lcm;
 }
