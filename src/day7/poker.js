@@ -1,22 +1,6 @@
 import { createReadStream } from "fs";
 import { createInterface } from "readline";
-import { Hand } from "./hand";
-
-export const cardValues = {
-  2: 0,
-  3: 1,
-  4: 2,
-  5: 3,
-  6: 4,
-  7: 5,
-  8: 6,
-  9: 7,
-  T: 8,
-  J: 9,
-  Q: 10,
-  K: 11,
-  A: 12,
-};
+import { Hand, compareHands } from "./hand";
 
 /**
  * Parses out the list of hands for the Day 6 problem
@@ -41,4 +25,16 @@ export async function parseHands(path) {
       .on("close", resolve);
   });
   return hands;
+}
+
+/**
+ * Calculates the total winnings, as described in the Day 7 Part 1 problem.
+ * @param {Hand[]} hands The hands to use
+ * @returns {number} The total winnings
+ */
+export function calculateTotalWinnings(hands) {
+  return hands
+    .sort(compareHands)
+    .map((h) => h.bid)
+    .reduce((a, b, i) => a + b * (i + 1));
 }
