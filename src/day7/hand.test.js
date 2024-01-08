@@ -8,7 +8,7 @@ test("Hand constructor constructs correct object", () => {
   expect(hand.score).toBe(7);
 });
 
-const scoreData = [
+const handStringData = [
   {
     data: "32T3K 765",
     expectedCards: "32T3K",
@@ -41,11 +41,13 @@ const scoreData = [
   },
 ];
 
-scoreData.forEach(({ data, expectedCards, expectedBid, expectedScore }) => {
-  test(`fromString constructs expected Hand object from '${data}'`, () => {
-    const actual = Hand.fromString(data);
-    expect(actual.cards).toBe(expectedCards);
-    expect(actual.bid).toBe(expectedBid);
-    expect(actual.score).toBe(expectedScore);
-  });
-});
+handStringData.forEach(
+  ({ data, expectedCards, expectedBid, expectedScore }) => {
+    test(`fromString constructs expected Hand object from '${data}'`, () => {
+      const actual = Hand.fromString(data);
+      expect(actual.cards).toBe(expectedCards);
+      expect(actual.bid).toBe(expectedBid);
+      expect(actual.score).toBe(expectedScore);
+    });
+  },
+);

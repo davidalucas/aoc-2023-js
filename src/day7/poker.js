@@ -1,4 +1,6 @@
-/** @typedef {{cards: string, bid: number}} Hand */
+import { createReadStream } from "fs";
+import { createInterface } from "readline";
+import { Hand } from "./hand";
 
 export const cardValues = {
   2: 0,
@@ -19,6 +21,24 @@ export const cardValues = {
 /**
  * Parses out the list of hands for the Day 6 problem
  * @param {string} path The path to the file containing the data
- * @returns {Hand[]}
+ * @returns {Promise<Hand[]>}
  */
-export function parseHands(path) {}
+export async function parseHands(path) {
+  /** @type {Hand[]} */
+  let hands = [];
+
+  const readInterface = createInterface({
+    input: createReadStream(path),
+    output: process.stdout,
+    terminal: false,
+  });
+
+  await new Promise((resolve) => {
+    readInterface
+      .on("line", (line) => {
+        hands.push(Hand.fromString(line));
+      })
+      .on("close", resolve);
+  });
+  return hands;
+}
