@@ -123,3 +123,42 @@ export function compareHands(first, second) {
   }
   return 0;
 }
+
+/** @type {Record<string, number>} */
+const jokerValues = {
+  J: 0,
+  2: 1,
+  3: 2,
+  4: 3,
+  5: 4,
+  6: 5,
+  7: 6,
+  8: 7,
+  9: 8,
+  T: 9,
+  Q: 10,
+  K: 11,
+  A: 12,
+};
+
+/**
+ * Performs a comparison between the first and second Hand objects, taking Jokers
+ * into account
+ * @param {Hand} first The first Hand
+ * @param {Hand} second The second Hand
+ * @returns {number} Returns a negative value if first should come before second, positive if they should switch, and 0 if they are equal
+ */
+export function compareHandsWithJokers(first, second) {
+  console.log(first, second);
+  if (first.score != second.score) {
+    return first.score - second.score;
+  }
+  for (let i = 0; i < first.cards.length; i++) {
+    const valDiff = jokerValues[first.cards[i]] - jokerValues[second.cards[i]];
+    if (valDiff == 0) {
+      continue;
+    }
+    return valDiff;
+  }
+  return 0;
+}
