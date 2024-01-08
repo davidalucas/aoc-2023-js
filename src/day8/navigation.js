@@ -63,3 +63,31 @@ export async function parseNavMap(path) {
   });
   return navMap;
 }
+
+/**
+ * Walks a NavigationMap, counting the number of steps it takes to travel from
+ * AAA to ZZZ.
+ * @param {NavigationMap} navMap The NavigationMap to traverse
+ */
+export function countSteps(navMap) {
+  let steps = 0;
+  let currentLocation = "AAA";
+
+  do {
+    for (let i = 0; i < navMap.directions.length; i++) {
+      const turn = navMap.directions[i];
+      currentLocation =
+        navMap.directions[i] == "L"
+          ? navMap.path[currentLocation].left
+          : navMap.path[currentLocation].right;
+      steps++;
+      if (currentLocation == "ZZZ") {
+        return steps;
+      }
+    }
+  } while (currentLocation != "AAA");
+
+  throw new Error(
+    "Infinite loop detected. The directions are never converging to location ZZZ.",
+  );
+}
