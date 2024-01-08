@@ -28,7 +28,6 @@ test("calcWinnings calculates correct sum for real data", async () => {
 
 test("calcWinningsWithJokers calculates correct sum for example data", async () => {
   const hands = await parseHands("./src/day7/example.txt");
-  console.log(hands.sort(compareHandsWithJokers));
   const actual = calcWinningsWithJokers(hands);
   expect(actual).toEqual(5905);
 });
