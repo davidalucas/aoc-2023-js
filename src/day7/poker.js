@@ -1,6 +1,6 @@
 import { createReadStream } from "fs";
 import { createInterface } from "readline";
-import { Hand, compareHands } from "./hand";
+import { Hand, compareHands, compareHandsWithJokers } from "./hand";
 
 /**
  * Parses out the list of hands for the Day 6 problem
@@ -32,9 +32,22 @@ export async function parseHands(path) {
  * @param {Hand[]} hands The hands to use
  * @returns {number} The total winnings
  */
-export function calculateTotalWinnings(hands) {
+export function calcWinnings(hands) {
   return hands
     .sort(compareHands)
+    .map((h) => h.bid)
+    .reduce((a, b, i) => a + b * (i + 1));
+}
+
+/**
+ * Calculates the total winnings, taking Jokers into account,
+ * as described in the Day 7 Part 2 problem.
+ * @param {Hand[]} hands The hands to use
+ * @returns {number} The total winnings
+ */
+export function calcWinningsWithJokers(hands) {
+  return hands
+    .sort(compareHandsWithJokers)
     .map((h) => h.bid)
     .reduce((a, b, i) => a + b * (i + 1));
 }

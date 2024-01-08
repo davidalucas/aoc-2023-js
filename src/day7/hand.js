@@ -149,9 +149,8 @@ const jokerValues = {
  * @returns {number} Returns a negative value if first should come before second, positive if they should switch, and 0 if they are equal
  */
 export function compareHandsWithJokers(first, second) {
-  console.log(first, second);
-  if (first.score != second.score) {
-    return first.score - second.score;
+  if (first.jokerScore != second.jokerScore) {
+    return first.jokerScore - second.jokerScore;
   }
   for (let i = 0; i < first.cards.length; i++) {
     const valDiff = jokerValues[first.cards[i]] - jokerValues[second.cards[i]];

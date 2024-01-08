@@ -1,6 +1,6 @@
 import { expect, test } from "vitest";
-import { Hand, compareHands } from "./hand";
-import { calculateTotalWinnings, parseHands } from "./poker";
+import { Hand, compareHands, compareHandsWithJokers } from "./hand";
+import { calcWinnings, calcWinningsWithJokers, parseHands } from "./poker";
 
 test("parseHands creates the correct array from example data", async () => {
   const expected = [
@@ -14,14 +14,27 @@ test("parseHands creates the correct array from example data", async () => {
   expect(actual).toEqual(expected);
 });
 
-test("calculateTotalWinnings calculates correct sum for example data", async () => {
+test("calcWinnings calculates correct sum for example data", async () => {
   const hands = await parseHands("./src/day7/example.txt");
-  const actual = calculateTotalWinnings(hands);
+  const actual = calcWinnings(hands);
   expect(actual).toEqual(6440);
 });
 
-test("calculateTotalWinnings calculates correct sum for real data", async () => {
+test("calcWinnings calculates correct sum for real data", async () => {
   const hands = await parseHands("./src/day7/data.txt");
-  const actual = calculateTotalWinnings(hands);
+  const actual = calcWinnings(hands);
   expect(actual).toEqual(251216224);
+});
+
+test("calcWinningsWithJokers calculates correct sum for example data", async () => {
+  const hands = await parseHands("./src/day7/example.txt");
+  console.log(hands.sort(compareHandsWithJokers));
+  const actual = calcWinningsWithJokers(hands);
+  expect(actual).toEqual(5905);
+});
+
+test("calcWinningsWithJokers calculates correct sum for real data", async () => {
+  const hands = await parseHands("./src/day7/data.txt");
+  const actual = calcWinningsWithJokers(hands);
+  expect(actual).toEqual(250825971);
 });
