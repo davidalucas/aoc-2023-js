@@ -12,6 +12,9 @@ export class Hand {
     const score = this.#getHandScore();
     /** @type {number} */
     this.score = score;
+    const jokerScore = this.#getJokerHandScore();
+    /** @type {number} */
+    this.jokerScore = jokerScore;
   }
 
   /**
@@ -41,6 +44,39 @@ export class Hand {
       }
       matches[card] += 1;
     }
+    let sum = 0;
+    for (const key in matches) {
+      if (Object.hasOwnProperty.call(matches, key)) {
+        sum += matches[key] ** 2;
+      }
+    }
+    return sum;
+  }
+
+  /**
+   * Does the same as above, except takes into account Joker cards as described
+   * in the Part 2 problem.
+   * @returns {number}
+   */
+  #getJokerHandScore() {
+    /** @type {Record<string, number>} */
+    let matches = {};
+    for (const card of this.cards) {
+      if (!matches[card]) {
+        matches[card] = 0;
+      }
+      matches[card] += 1;
+    }
+
+    if (matches["J"]) {
+      const bonus = matches.J;
+      matches.J = 0;
+      const maxCard = Object.keys(matches).reduce((a, b) =>
+        matches[a] > matches[b] ? a : b,
+      );
+      matches[maxCard] += bonus;
+    }
+
     let sum = 0;
     for (const key in matches) {
       if (Object.hasOwnProperty.call(matches, key)) {

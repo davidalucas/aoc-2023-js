@@ -14,40 +14,46 @@ const handStringData = [
     expectedCards: "32T3K",
     expectedBid: 765,
     expectedScore: 7,
+    expectedJokerScore: 7,
   },
   {
     data: "T55J5 684",
     expectedCards: "T55J5",
     expectedBid: 684,
     expectedScore: 11,
+    expectedJokerScore: 17,
   },
   {
     data: "KK677 28",
     expectedCards: "KK677",
     expectedBid: 28,
     expectedScore: 9,
+    expectedJokerScore: 9,
   },
   {
     data: "KTJJT 220",
     expectedCards: "KTJJT",
     expectedBid: 220,
     expectedScore: 9,
+    expectedJokerScore: 17,
   },
   {
     data: "QQQJA 483",
     expectedCards: "QQQJA",
     expectedBid: 483,
     expectedScore: 11,
+    expectedJokerScore: 17,
   },
 ];
 
 handStringData.forEach(
-  ({ data, expectedCards, expectedBid, expectedScore }) => {
+  ({ data, expectedCards, expectedBid, expectedScore, expectedJokerScore }) => {
     test(`fromString constructs expected Hand object from '${data}'`, () => {
       const actual = Hand.fromString(data);
       expect(actual.cards).toBe(expectedCards);
       expect(actual.bid).toBe(expectedBid);
       expect(actual.score).toBe(expectedScore);
+      expect(actual.jokerScore).toBe(expectedJokerScore);
     });
   },
 );
