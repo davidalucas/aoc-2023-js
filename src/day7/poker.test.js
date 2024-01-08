@@ -1,5 +1,5 @@
 import { expect, test } from "vitest";
-import { Hand, compareHands, compareHandsWithJokers } from "./hand";
+import { Hand } from "./hand";
 import { calcWinnings, calcWinningsWithJokers, parseHands } from "./poker";
 
 test("parseHands creates the correct array from example data", async () => {
