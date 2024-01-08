@@ -50,3 +50,40 @@ export class Hand {
     return sum;
   }
 }
+
+/** @type {Record<string, number>} */
+const cardValues = {
+  2: 0,
+  3: 1,
+  4: 2,
+  5: 3,
+  6: 4,
+  7: 5,
+  8: 6,
+  9: 7,
+  T: 8,
+  J: 9,
+  Q: 10,
+  K: 11,
+  A: 12,
+};
+
+/**
+ * Performs a comparison between the first and second Hand objects
+ * @param {Hand} first The first Hand
+ * @param {Hand} second The second Hand
+ * @returns {number} Returns a negative value if first should come before second, positive if they should switch, and 0 if they are equal
+ */
+export function compareHands(first, second) {
+  if (first.score != second.score) {
+    return first.score - second.score;
+  }
+  for (let i = 0; i < first.cards.length; i++) {
+    const valDiff = cardValues[first.cards[i]] - cardValues[second.cards[i]];
+    if (valDiff == 0) {
+      continue;
+    }
+    return valDiff;
+  }
+  return 0;
+}

@@ -1,5 +1,5 @@
 import { expect, test } from "vitest";
-import { Hand } from "./hand";
+import { Hand, compareHands } from "./hand";
 
 test("Hand constructor constructs correct object", () => {
   const hand = new Hand("32T3K", 765);
@@ -51,3 +51,21 @@ handStringData.forEach(
     });
   },
 );
+
+test("compareHands returns negative when expected", () => {
+  const first = Hand.fromString("32T3K 765");
+  const second = Hand.fromString("QQQJA 483");
+  expect(compareHands(first, second)).toBeLessThan(0);
+});
+
+test("compareHands returns positive when expected", () => {
+  const first = Hand.fromString("QQQJA 483");
+  const second = Hand.fromString("32T3K 765");
+  expect(compareHands(first, second)).toBeGreaterThan(0);
+});
+
+test("compareHands returns zero when expected", () => {
+  const first = Hand.fromString("QQQJA 483");
+  const second = Hand.fromString("QQQJA 483");
+  expect(compareHands(first, second)).toBe(0);
+});
