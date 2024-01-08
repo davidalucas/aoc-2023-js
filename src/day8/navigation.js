@@ -91,3 +91,12 @@ export function countSteps(navMap) {
     "Infinite loop detected. The directions are never converging to location ZZZ.",
   );
 }
+
+/**
+ * Gets all of the nodes which end with an "A" character
+ * @param {NavigationMap} navMap The NavigationMap to assess
+ * @returns {string[]}
+ */
+export function getStartingNodes(navMap) {
+  return Object.keys(navMap.path).filter((n) => n.endsWith("A"));
+}

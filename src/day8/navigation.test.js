@@ -1,5 +1,10 @@
 import { test, expect } from "vitest";
-import { countSteps, parseNavMap, parseNode } from "./navigation";
+import {
+  countSteps,
+  getStartingNodes,
+  parseNavMap,
+  parseNode,
+} from "./navigation";
 
 test("parseNode returns expected data", () => {
   /** @type {{id: string, node: import("./navigation").BinaryNode}} */
@@ -41,4 +46,11 @@ test("countSteps returns correct number of steps for real data", async () => {
   const expected = 20221;
   const actual = countSteps(navMap);
   expect(actual).toBe(expected);
+});
+
+test("getStartingNodes returns correct values", async () => {
+  const navMap = await parseNavMap("./src/day8/example3.txt");
+  const expected = ["11A", "22A"];
+  const actual = getStartingNodes(navMap);
+  expect(actual).toStrictEqual(expected);
 });
