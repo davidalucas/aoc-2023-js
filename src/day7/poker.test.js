@@ -1,5 +1,5 @@
 import { expect, test } from "vitest";
-import { Hand, compareHands, compareHandsWithJokers } from "./hand";
+import { Hand } from "./hand";
 import { calcWinnings, calcWinningsWithJokers, parseHands } from "./poker";
 
 test("parseHands creates the correct array from example data", async () => {
@@ -28,7 +28,6 @@ test("calcWinnings calculates correct sum for real data", async () => {
 
 test("calcWinningsWithJokers calculates correct sum for example data", async () => {
   const hands = await parseHands("./src/day7/example.txt");
-  console.log(hands.sort(compareHandsWithJokers));
   const actual = calcWinningsWithJokers(hands);
   expect(actual).toEqual(5905);
 });

@@ -1,7 +1,7 @@
 /**
  * Calculates the total sum of all winnings from the scratch cards
  * @param {string[]} data The raw data provided in the problem
- * @returns {int} The actual winnings
+ * @returns {number} The actual winnings
  */
 export function calculateWinnings(data) {
   return data
