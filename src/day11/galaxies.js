@@ -40,3 +40,52 @@ export async function parseUniverse(path) {
   });
   return { galaxies, filledRows, filledCols };
 }
+
+/**
+ * Calculates distance by walking across row first, then across the col direction
+ * @param {Coordinate} a The coordinates of the first point
+ * @param {Coordinate} b The coordinates of the second point
+ * @param {Set<number>} filledRows The rows which contain galaxies
+ * @param {Set<number>} filledCols The columns which contain galaxies
+ * @returns {number}
+ */
+export function calcDistance(a, b, filledRows, filledCols) {
+  let rowDist = 0;
+  let colDist = 0;
+  if (a.row - b.row < 0) {
+    for (let i = a.row; i < b.row; i++) {
+      if (!filledRows.has(i)) {
+        rowDist += 2;
+      } else {
+        rowDist++;
+      }
+    }
+  } else if (a.row - b.row > 0) {
+    for (let i = a.row; i > b.row; i--) {
+      if (!filledRows.has(i)) {
+        rowDist += 2;
+      } else {
+        rowDist++;
+      }
+    }
+  }
+
+  if (a.col - b.col < 0) {
+    for (let i = a.col; i < b.col; i++) {
+      if (!filledCols.has(i)) {
+        colDist += 2;
+      } else {
+        colDist++;
+      }
+    }
+  } else if (a.col - b.col > 0) {
+    for (let i = a.col; i > b.col; i--) {
+      if (!filledCols.has(i)) {
+        colDist += 2;
+      } else {
+        colDist++;
+      }
+    }
+  }
+  return rowDist + colDist;
+}
