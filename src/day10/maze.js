@@ -63,3 +63,20 @@ export async function parseMazeData(path) {
 
   return maze;
 }
+
+/**
+ * Finds the start position "S" in the maze
+ * @param {string[]} maze The maze we're working with
+ * @returns {Coordinate} The starting coordinates
+ * @throws If no starting position is found
+ */
+export function findStart(maze) {
+  for (let y = 0; y < maze.length; y++) {
+    for (let x = 0; x < maze[y].length; x++) {
+      if (maze[y][x] == "S") {
+        return { x: x, y: y };
+      }
+    }
+  }
+  throw new Error("Unable to find starting position");
+}
