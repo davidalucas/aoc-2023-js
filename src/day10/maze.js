@@ -1,38 +1,38 @@
 import { createReadStream } from "fs";
 import { createInterface } from "readline";
 
-/** @typedef {{x: number, y: number}} Coordinate */
+/** @typedef {{row: number, col: number}} Coordinate */
 
 /** @type {Record<string, Coordinate>[][]} */
 export const mazeGuide = [
   [
     {}, // 0, 0
     {
-      "|": { x: -1, y: 0 },
-      7: { x: 0, y: -1 },
-      F: { x: 0, y: 1 },
+      "|": { row: -1, col: 0 },
+      7: { row: 0, col: -1 },
+      F: { row: 0, col: 1 },
     },
     {}, // 0, 2
   ],
   [
     {
-      "-": { x: 0, y: -1 },
-      L: { x: -1, y: 0 },
-      F: { x: 1, y: 0 },
+      "-": { row: 0, col: -1 },
+      L: { row: -1, col: 0 },
+      F: { row: 1, col: 0 },
     },
     {}, // 1, 1
     {
-      "-": { x: 0, y: 1 },
-      J: { x: -1, y: 0 },
-      7: { x: 1, y: 0 },
+      "-": { row: 0, col: 1 },
+      J: { row: -1, col: 0 },
+      7: { row: 1, col: 0 },
     },
   ],
   [
     {}, // 2, 0
     {
-      "|": { x: 1, y: 0 },
-      L: { x: 0, y: 1 },
-      J: { x: 0, y: -1 },
+      "|": { row: 1, col: 0 },
+      L: { row: 0, col: 1 },
+      J: { row: 0, col: -1 },
     },
     {}, // 2, 2
   ],
@@ -71,10 +71,10 @@ export async function parseMazeData(path) {
  * @throws If no starting position is found
  */
 export function findStart(maze) {
-  for (let y = 0; y < maze.length; y++) {
-    for (let x = 0; x < maze[y].length; x++) {
-      if (maze[y][x] == "S") {
-        return { x: x, y: y };
+  for (let row = 0; row < maze.length; row++) {
+    for (let col = 0; col < maze[row].length; col++) {
+      if (maze[row][col] == "S") {
+        return { row: row, col: col };
       }
     }
   }
@@ -90,21 +90,61 @@ export function findStart(maze) {
 export function moveFromStart(maze, start) {
   // check top, right, bottom, left
   const surrKeyData = [
-    { x: 0, y: -1, expected: ["|", "F", "7"] },
-    { x: 1, y: 0, expected: ["-", "J", "7"] },
-    { x: 0, y: 1, expected: ["|", "J", "L"] },
-    { x: -1, y: 0, expected: ["-", "F", "L"] },
+    { rowDiff: -1, colDiff: 0, expected: ["|", "F", "7"] },
+    { rowDiff: 0, colDiff: 1, expected: ["-", "J", "7"] },
+    { rowDiff: 1, colDiff: 0, expected: ["|", "J", "L"] },
+    { rowDiff: 0, colDiff: -1, expected: ["-", "F", "L"] },
   ];
   for (const surrKey of surrKeyData) {
     /** @type {Coordinate} */
     const coord = {
-      x: start.x + surrKey.x,
-      y: start.y + surrKey.y,
+      row: start.row + surrKey.rowDiff,
+      col: start.col + surrKey.colDiff,
     };
-    const element = maze[coord.y][coord.x];
+    const element = maze[coord.row][coord.col];
     if (surrKey.expected.some((s) => s === element)) {
       return coord;
     }
   }
   throw new Error(`Unable to move from the start position ${start}`);
+}
+
+/**
+ *
+ * @param {Coordinate} previous The previous position
+ * @param {Coordinate} current The current position
+ * @param {Coordinate} finish The finish line's position
+ * @param {string[]} maze The maze
+ * @returns {number} The number of moves it takes to get to the finish line
+ */
+export function goToFinish(previous, current, finish, maze) {
+  if (current.row == finish.row && current.col == finish.col) {
+    return 0;
+  }
+  const rowDiff = current.row - previous.row;
+  const colDiff = current.col - previous.col;
+  const currSymbol = maze[current.row][current.col];
+  const nextDiffRecord = mazeGuide[rowDiff + 1][colDiff + 1];
+  const nextDiff = nextDiffRecord[currSymbol];
+  /** @type {Coordinate} */
+  const next = {
+    row: current.row + nextDiff.row,
+    col: current.col + nextDiff.col,
+  };
+
+  const steps = goToFinish(current, next, finish, maze);
+
+  return 1 + steps;
+}
+
+/**
+ *
+ * @param {string[]} maze
+ * @returns {number}
+ */
+export function getFurthestDistFromStart(maze) {
+  const finish = findStart(maze); // we're setting the maze's 'start' as our finish line
+  const start = moveFromStart(maze, finish);
+  const totalMoves = goToFinish(finish, start, finish, maze);
+  return (1 + totalMoves) / 2;
 }
