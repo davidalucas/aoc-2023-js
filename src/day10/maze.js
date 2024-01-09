@@ -2,6 +2,7 @@ import { createReadStream } from "fs";
 import { createInterface } from "readline";
 
 /** @typedef {{row: number, col: number}} Coordinate */
+/** @typedef {{symbol: string, coord: Coordinate}} PathNode */
 
 /** @type {Record<string, Coordinate>[][]} */
 export const mazeGuide = [
@@ -115,36 +116,72 @@ export function moveFromStart(maze, start) {
  * @param {Coordinate} current The current position
  * @param {Coordinate} finish The finish line's position
  * @param {string[]} maze The maze
- * @returns {number} The number of moves it takes to get to the finish line
+ * @returns {PathNode[]} The path to the finish line
  */
 export function goToFinish(previous, current, finish, maze) {
+  const currSymbol = maze[current.row][current.col];
   if (current.row == finish.row && current.col == finish.col) {
-    return 0;
+    return [{ symbol: currSymbol, coord: current }];
   }
   const rowDiff = current.row - previous.row;
   const colDiff = current.col - previous.col;
-  const currSymbol = maze[current.row][current.col];
-  const nextDiffRecord = mazeGuide[rowDiff + 1][colDiff + 1];
-  const nextDiff = nextDiffRecord[currSymbol];
+  const nextDiff = mazeGuide[rowDiff + 1][colDiff + 1][currSymbol];
   /** @type {Coordinate} */
   const next = {
     row: current.row + nextDiff.row,
     col: current.col + nextDiff.col,
   };
 
-  const steps = goToFinish(current, next, finish, maze);
+  const path = goToFinish(current, next, finish, maze);
+  path.push({ symbol: currSymbol, coord: current });
+  return path;
+}
 
-  return 1 + steps;
+/**
+ * Solves Day 10 Part 1
+ * @param {string[]} maze The maze to analyze
+ * @returns {number} The furthest distance you travel from the start position along the animal's path
+ */
+export function getFurthestDistFromStart(maze) {
+  return getPath(maze).length / 2;
 }
 
 /**
  *
- * @param {string[]} maze
- * @returns {number}
+ * @param {string[]} maze The maze to analyze
+ * @returns {PathNode[]} The path of the pipe loop starting at a node next to "S", and
+ * finishing on the "S" node
  */
-export function getFurthestDistFromStart(maze) {
-  const finish = findStart(maze); // we're setting the maze's 'start' as our finish line
-  const start = moveFromStart(maze, finish);
-  const totalMoves = goToFinish(finish, start, finish, maze);
-  return (1 + totalMoves) / 2;
+export function getPath(maze) {
+  const finish = findStart(maze); // set our finish line at the "S" element
+  const start = moveFromStart(maze, finish); // set our starting line on a path element next to "S"
+  const path = goToFinish(finish, start, finish, maze).reverse();
+  return path;
+}
+
+/**
+ * Calculates the area inside of a given path using the shoelace formula
+ * @param {PathNode[]} path The path to analyze
+ * @returns {number} The area inside of the path loop
+ */
+export function getPathArea(path) {
+  let areaDoubled = 0;
+  for (let i = 0; i < path.length; i++) {
+    const nextIdx = (i + 1) % path.length;
+    areaDoubled +=
+      (path[i].coord.row + path[nextIdx].coord.row) *
+      (path[i].coord.col - path[nextIdx].coord.col);
+  }
+  return 0.5 * areaDoubled;
+}
+
+/**
+ * Solves the Day 10 Part 2 problem using Pick's theorem
+ * @param {string[]} maze The maze to analyze
+ * @returns {number} The number of elements inside of the path loop
+ */
+export function getInteriorElements(maze) {
+  const path = getPath(maze);
+  const area = getPathArea(path);
+  return area - path.length / 2 + 1;
 }

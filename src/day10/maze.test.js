@@ -1,10 +1,13 @@
 import { test, expect } from "vitest";
 import {
   findStart,
+  getPathArea,
   getFurthestDistFromStart,
   mazeGuide,
   moveFromStart,
   parseMazeData,
+  getPath,
+  getInteriorElements,
 } from "./maze";
 
 test("mazeGuide returns expected parameters", () => {
@@ -67,5 +70,40 @@ test("getFurthestDistFromStart returns correct result for real data", async () =
   const maze = await parseMazeData("./src/day10/data.txt");
   const expected = 6875;
   const actual = getFurthestDistFromStart(maze);
+  expect(actual).toStrictEqual(expected);
+});
+
+test("getPathArea returns correct result for example1 data", async () => {
+  const maze = await parseMazeData("./src/day10/example1.txt");
+  const expected = 4;
+  const actual = getPathArea(getPath(maze));
+  expect(actual).toStrictEqual(expected);
+});
+
+test("getPathArea returns correct result for example2 data", async () => {
+  const maze = await parseMazeData("./src/day10/example2.txt");
+  const expected = 8;
+  const actual = getPathArea(getPath(maze));
+  expect(actual).toStrictEqual(expected);
+});
+
+test("getInteriorElements returns correct result for example1 data", async () => {
+  const maze = await parseMazeData("./src/day10/example1.txt");
+  const expected = 1;
+  const actual = getInteriorElements(maze);
+  expect(actual).toStrictEqual(expected);
+});
+
+test("getInteriorElements returns correct result for example2 data", async () => {
+  const maze = await parseMazeData("./src/day10/example2.txt");
+  const expected = 1;
+  const actual = getInteriorElements(maze);
+  expect(actual).toStrictEqual(expected);
+});
+
+test("getInteriorElements returns correct result for real data", async () => {
+  const maze = await parseMazeData("./src/day10/data.txt");
+  const expected = 471;
+  const actual = getInteriorElements(maze);
   expect(actual).toStrictEqual(expected);
 });
