@@ -1,5 +1,5 @@
 import { test, expect } from "vitest";
-import { findStart, mazeGuide, parseMazeData } from "./maze";
+import { findStart, mazeGuide, moveFromStart, parseMazeData } from "./maze";
 
 test("mazeGuide returns expected parameters", () => {
   expect(mazeGuide[0][1]["F"]).toStrictEqual({ x: 0, y: 1 });
@@ -22,5 +22,21 @@ test("findStart finds correct starting position for example2 data", async () => 
   let expected = { x: 0, y: 2 };
   let maze = await parseMazeData("./src/day10/example2.txt");
   let actual = findStart(maze);
+  expect(actual).toStrictEqual(expected);
+});
+
+test("moveFromStart finds correct next position for example1 data", async () => {
+  const expected = { x: 2, y: 1 };
+  const maze = await parseMazeData("./src/day10/example1.txt");
+  const start = findStart(maze);
+  const actual = moveFromStart(maze, start);
+  expect(actual).toStrictEqual(expected);
+});
+
+test("moveFromStart finds correct next position for example2 data", async () => {
+  const expected = { x: 1, y: 2 };
+  const maze = await parseMazeData("./src/day10/example2.txt");
+  const start = findStart(maze);
+  const actual = moveFromStart(maze, start);
   expect(actual).toStrictEqual(expected);
 });

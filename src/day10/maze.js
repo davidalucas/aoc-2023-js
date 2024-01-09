@@ -80,3 +80,31 @@ export function findStart(maze) {
   }
   throw new Error("Unable to find starting position");
 }
+
+/**
+ * Figures out where to move first from the starting position
+ * @param {string[]} maze The maze we're assessing
+ * @param {Coordinate} start The start position
+ * @returns {Coordinate}
+ */
+export function moveFromStart(maze, start) {
+  // check top, right, bottom, left
+  const surrKeyData = [
+    { x: 0, y: -1, expected: ["|", "F", "7"] },
+    { x: 1, y: 0, expected: ["-", "J", "7"] },
+    { x: 0, y: 1, expected: ["|", "J", "L"] },
+    { x: -1, y: 0, expected: ["-", "F", "L"] },
+  ];
+  for (const surrKey of surrKeyData) {
+    /** @type {Coordinate} */
+    const coord = {
+      x: start.x + surrKey.x,
+      y: start.y + surrKey.y,
+    };
+    const element = maze[coord.y][coord.x];
+    if (surrKey.expected.some((s) => s === element)) {
+      return coord;
+    }
+  }
+  throw new Error(`Unable to move from the start position ${start}`);
+}
