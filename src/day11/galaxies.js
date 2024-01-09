@@ -89,3 +89,23 @@ export function calcDistance(a, b, filledRows, filledCols) {
   }
   return rowDist + colDist;
 }
+
+/**
+ * Performs the calculation described in Day 11 Part 1
+ * @param {Universe} universe The universe to analyze
+ * @returns {number} The sum of the minimum distances between all pairs of galaxies
+ */
+export function calcTotalMinDistances(universe) {
+  let totalDistance = 0;
+  for (let i = 0; i < universe.galaxies.length; i++) {
+    for (let j = i + 1; j < universe.galaxies.length; j++) {
+      totalDistance += calcDistance(
+        universe.galaxies[i],
+        universe.galaxies[j],
+        universe.filledRows,
+        universe.filledCols,
+      );
+    }
+  }
+  return totalDistance;
+}

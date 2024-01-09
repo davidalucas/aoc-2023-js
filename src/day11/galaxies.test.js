@@ -1,5 +1,5 @@
 import { expect, test } from "vitest";
-import { calcDistance, parseUniverse } from "./galaxies";
+import { calcDistance, calcTotalMinDistances, parseUniverse } from "./galaxies";
 
 test("parseUniverse constructs expected object from example data", async () => {
   /** @type {import("./galaxies").Coordinate[]} */
@@ -32,5 +32,19 @@ test("calcDistance gets expected distance from two galaxies", async () => {
     universe.filledRows,
     universe.filledCols,
   );
+  expect(actual).toBe(expected);
+});
+
+test("calcTotalMinDistances gets expected total from example data", async () => {
+  const universe = await parseUniverse("./src/day11/example.txt");
+  const expected = 374;
+  const actual = calcTotalMinDistances(universe);
+  expect(actual).toBe(expected);
+});
+
+test("calcTotalMinDistances gets expected total from example data", async () => {
+  const universe = await parseUniverse("./src/day11/data.txt");
+  const expected = 9681886;
+  const actual = calcTotalMinDistances(universe);
   expect(actual).toBe(expected);
 });
