@@ -31,20 +31,45 @@ test("calcDistance gets expected distance from two galaxies", async () => {
     universe.galaxies[8],
     universe.filledRows,
     universe.filledCols,
+    2,
   );
   expect(actual).toBe(expected);
 });
 
-test("calcTotalMinDistances gets expected total from example data", async () => {
-  const universe = await parseUniverse("./src/day11/example.txt");
-  const expected = 374;
-  const actual = calcTotalMinDistances(universe);
-  expect(actual).toBe(expected);
+const exampleDataset = [
+  { filePath: "./src/day11/example.txt", expFactor: 2, expectedDist: 374 },
+  { filePath: "./src/day11/example.txt", expFactor: 10, expectedDist: 1030 },
+  { filePath: "./src/day11/example.txt", expFactor: 100, expectedDist: 8410 },
+];
+
+exampleDataset.forEach(({ filePath, expFactor, expectedDist }) => {
+  test(`calcTotalMinDistances returns ${expectedDist} for expansion factor ${expFactor} from example data`, async () => {
+    const universe = await parseUniverse(filePath);
+    let actual = calcTotalMinDistances(universe, expFactor);
+    expect(actual).toBe(expectedDist);
+  });
 });
 
 test("calcTotalMinDistances gets expected total from example data", async () => {
   const universe = await parseUniverse("./src/day11/data.txt");
   const expected = 9681886;
-  const actual = calcTotalMinDistances(universe);
+  const actual = calcTotalMinDistances(universe, 2);
   expect(actual).toBe(expected);
+});
+
+const realDataset = [
+  { filePath: "./src/day11/data.txt", expFactor: 2, expectedDist: 9681886 },
+  {
+    filePath: "./src/day11/data.txt",
+    expFactor: 1_000_000,
+    expectedDist: 791134099634,
+  },
+];
+
+realDataset.forEach(({ filePath, expFactor, expectedDist }) => {
+  test(`calcTotalMinDistances returns ${expectedDist} for expansion factor ${expFactor} from real data`, async () => {
+    const universe = await parseUniverse(filePath);
+    let actual = calcTotalMinDistances(universe, expFactor);
+    expect(actual).toBe(expectedDist);
+  });
 });

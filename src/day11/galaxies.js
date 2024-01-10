@@ -47,15 +47,16 @@ export async function parseUniverse(path) {
  * @param {Coordinate} b The coordinates of the second point
  * @param {Set<number>} filledRows The rows which contain galaxies
  * @param {Set<number>} filledCols The columns which contain galaxies
+ * @param {number} gapFactor The factor to use for empty rows/columns
  * @returns {number}
  */
-export function calcDistance(a, b, filledRows, filledCols) {
+export function calcDistance(a, b, filledRows, filledCols, gapFactor) {
   let rowDist = 0;
   let colDist = 0;
   if (a.row - b.row < 0) {
     for (let i = a.row; i < b.row; i++) {
       if (!filledRows.has(i)) {
-        rowDist += 2;
+        rowDist += gapFactor;
       } else {
         rowDist++;
       }
@@ -63,7 +64,7 @@ export function calcDistance(a, b, filledRows, filledCols) {
   } else if (a.row - b.row > 0) {
     for (let i = a.row; i > b.row; i--) {
       if (!filledRows.has(i)) {
-        rowDist += 2;
+        rowDist += gapFactor;
       } else {
         rowDist++;
       }
@@ -73,7 +74,7 @@ export function calcDistance(a, b, filledRows, filledCols) {
   if (a.col - b.col < 0) {
     for (let i = a.col; i < b.col; i++) {
       if (!filledCols.has(i)) {
-        colDist += 2;
+        colDist += gapFactor;
       } else {
         colDist++;
       }
@@ -81,7 +82,7 @@ export function calcDistance(a, b, filledRows, filledCols) {
   } else if (a.col - b.col > 0) {
     for (let i = a.col; i > b.col; i--) {
       if (!filledCols.has(i)) {
-        colDist += 2;
+        colDist += gapFactor;
       } else {
         colDist++;
       }
@@ -93,9 +94,10 @@ export function calcDistance(a, b, filledRows, filledCols) {
 /**
  * Performs the calculation described in Day 11 Part 1
  * @param {Universe} universe The universe to analyze
+ * @param {number | undefined} gapFactor The expansion factor to use for empty rows/cols
  * @returns {number} The sum of the minimum distances between all pairs of galaxies
  */
-export function calcTotalMinDistances(universe) {
+export function calcTotalMinDistances(universe, gapFactor) {
   let totalDistance = 0;
   for (let i = 0; i < universe.galaxies.length; i++) {
     for (let j = i + 1; j < universe.galaxies.length; j++) {
@@ -104,6 +106,7 @@ export function calcTotalMinDistances(universe) {
         universe.galaxies[j],
         universe.filledRows,
         universe.filledCols,
+        gapFactor ?? 2,
       );
     }
   }
